@@ -59,7 +59,7 @@ public class MinimaxSearch<BOARD extends Board, MOVE extends Move> implements Se
 
   }
 
-  private double AlphaBeta(BOARD currentBoard, int depth, double alpha, double beta, boolean maxTurn, Move bestMove)
+  private double AlphaBeta(BOARD currentBoard, int depth, double alpha, double beta, boolean maxTurn, Move &bestMove)
   {
     if ((depth == 0) || (currentBoard.endGame() != -3)) {
       currentBoard.heuristicEvaluation(); }
@@ -74,7 +74,7 @@ public class MinimaxSearch<BOARD extends Board, MOVE extends Move> implements Se
         double oldVal = Val;
         Val = Math.max(Val, AlphaBeta(currentBoard, depth-1, alpha, beta, false, bestMove));
         if (oldVal != Val) {
-          bestMove = moveList;}
+          bestMove = moveList;} // this will be set lastly at the top nodes children and hence give the best
         currentBoard.reverseMove(moveList);
         alpha = Math.max(alpha, Val);
         moveList.value = Val;
@@ -91,10 +91,7 @@ public class MinimaxSearch<BOARD extends Board, MOVE extends Move> implements Se
       while (moveList != null)
       {
         currentBoard.makeMove(moveList);
-        double oldVal = Val;
-        Val = Math.max(Val, AlphaBeta(currentBoard, depth-1, alpha, beta, true, bestMove));
-        if (oldVal != Val) {
-          bestMove = moveList;}
+        Val = Math.min(Val, AlphaBeta(currentBoard, depth-1, alpha, beta, true, bestMove));
         currentBoard.reverseMove(moveList);
         beta = Math.min(beta, Val);
         moveList.value = Val;

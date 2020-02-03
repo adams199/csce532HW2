@@ -389,7 +389,12 @@ public class LOABoard extends Board {
    * @return evaluation of the state
    */
   public double heuristicEvaluation(){
-    return 0;
+    double goodness = 0;
+    if((this.findPiece(LOABoard.BOARD_SIZE/2, LOABoard.BOARD_SIZE/2, this.getCurrentPlayer()) != null))
+    {
+      goodness++;
+    }
+    return Math.tanh(goodness);
   }
 
   /**
